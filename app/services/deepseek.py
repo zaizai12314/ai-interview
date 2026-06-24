@@ -75,34 +75,3 @@ async def match_jobs(skills: list[str]) -> list[dict]:
     except json.JSONDecodeError:
         return []
 
-async def evaluate_answer(question: str, reference_answer: str, user_answer: str) -> dict:
-    """评估回答质量，打分+反馈"""
-    import json
-    import re
-    messages = [
-        {"role": "system", "content": "你是严格的面试官。评估候选人的回答并给出: score(0-100整数), feedback(1-2句中肯点评,中文), is_correct(正确/部分正确/错误)。以 JSON 格式返回。"},
-        {"role": "user", "content": f"题目: {question}\n参考答案要点: {reference_answer}\n候选人回答: {user_answer}"},
-    ]
-    result = await chat_completion(messages, temperature=0.3)
-    if not result:
-        return {"score": 0, "feedback": "评估失败，请重试", "is_correct": "错误"}
-    if "```" in result:
-        m = re.search(r"```(?:json)?\s*([\s\S]*?)```", result)
-        if m:
-            result = m.group(1).strip()
-    try:
-        return json.loads(result)
-    except json.JSONDecodeError:
-        return {"score": 0, "feedback": "解析评估结果失败", "is_correct": "错误"}
-
-async def generate_report(interview_history: list[dict], target_job: str) -> str:
-    """生成面试综合报告"""
-    history_text = "\n".join([
-        f"第{r['round']}轮: {r['question']}\n回答: {r['answer']}\n得分: {r['score']}"
-        for r in interview_history
-    ])
-    messages = [
-        {"role": "system", "content": f"你是面试评估专家。根据{target_job}岗位的面试记录，生成一份结构化的面试报告，包含: 总体评价、优势、待改进项、学习建议。用中文输出 Markdown 格式。"},
-        {"role": "user", "content": history_text},
-    ]
-    return await chat_completion(messages, temperature=0.5, max_tokens=4096)

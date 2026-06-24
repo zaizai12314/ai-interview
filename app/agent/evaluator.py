@@ -1,5 +1,5 @@
 import json
-from app.services.deepseek import chat_completion, chat_completion_sync
+from app.services.deepseek import chat_completion_sync
 
 
 class EvaluatorAgent:
@@ -27,15 +27,6 @@ class EvaluatorAgent:
             {"role": "user", "content": f"题目: {question}\n候选人回答: {answer}"},
         ]
         r = chat_completion_sync(msgs, temperature=0.3)
-        return self._parse(r)
-
-    async def evaluate(self, question: str, answer: str) -> dict:
-        """异步评分（供 API 直接调用）"""
-        msgs = [
-            {"role": "system", "content": self.SYSTEM_PROMPT},
-            {"role": "user", "content": f"题目: {question}\n候选人回答: {answer}"},
-        ]
-        r = await chat_completion(msgs, temperature=0.3)
         return self._parse(r)
 
     def _parse(self, raw: str | None) -> dict:

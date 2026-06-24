@@ -1,5 +1,5 @@
 import json
-from app.services.deepseek import chat_completion, chat_completion_sync
+from app.services.deepseek import chat_completion_sync
 from app.agent.prompts import INTERVIEWER_SYSTEM_PROMPT, INTERVIEW_START_PROMPT
 
 
@@ -43,7 +43,7 @@ class InterviewerAgent:
         ])
         return agent
 
-    # ── 异步方法（供 API 直接调用） ────────────────────────────
+    # ── 公开方法 ─────────────────────────────────────────────
 
     def get_start_prompt(self) -> str:
         return INTERVIEW_START_PROMPT.format(
@@ -51,63 +51,6 @@ class InterviewerAgent:
             job_title=self.job_title,
             max_rounds=self.max_rounds,
         )
-
-    async def start_interview(self, retrieved_questions: list[dict] | None = None) -> dict:
-        prompt = self.get_start_prompt()
-        self.messages.append({"role": "user", "content": prompt})
-        self._inject_rag_context(retrieved_questions)
-        response = await chat_completion(self.messages, temperature=0.8)
-        self.messages.append({"role": "assistant", "content": response})
-        self.current_round = 1
-        result = self._parse_response(response)
-        self.history.append({
-            "round": 1,
-            "question": result.get("content", ""),
-            "answer": "",
-            "score": 0,
-            "feedback": "",
-        })
-        return result
-
-    async def process_answer(self, answer: str, evaluation: dict,
-                             retrieved_questions: list[dict] | None = None) -> dict:
-        feedback_msg = (
-            f"用户回答评估: 得分{evaluation.get('score')}/100, "
-            f"正确性:{evaluation.get('is_correct')}, "
-            f"反馈:{evaluation.get('feedback')}"
-        )
-        self.messages.append({"role": "user", "content": feedback_msg})
-
-        if self.history:
-            self.history[-1]["answer"] = answer
-            self.history[-1]["score"] = evaluation.get("score")
-            self.history[-1]["feedback"] = evaluation.get("feedback")
-
-        if self.current_round >= self.max_rounds:
-            return self._finish()
-
-        self.current_round += 1
-        self._inject_rag_context(retrieved_questions)
-        response = await chat_completion(self.messages, temperature=0.8)
-        self.messages.append({"role": "assistant", "content": response})
-
-        parsed = self._parse_response(response)
-        if not parsed.get("content", "").strip():
-            response = await chat_completion(self.messages, temperature=0.9)
-            self.messages.append({"role": "assistant", "content": response})
-            parsed = self._parse_response(response)
-
-        if parsed.get("action") == "ask_question":
-            self.history.append({
-                "round": self.current_round,
-                "question": parsed.get("content", ""),
-                "answer": "",
-                "score": 0,
-                "feedback": "",
-            })
-        return parsed
-
-    # ── 同步方法（供 Celery 使用） ────────────────────────────
 
     def start_interview_sync(self, retrieved_questions: list[dict] | None = None) -> dict:
         prompt = self.get_start_prompt()

@@ -19,9 +19,4 @@ export default {
   getReport(id) { return api.get(`/interview/${id}/report`) },
   getHistory() { return api.get("/interview/history/list") },
   deleteInterview(id) { return api.delete(`/interview/${id}`) },
-  listQuestions(params) { return api.get("/questions", { params }) },
-  createQuestion(data) { return api.post("/questions", data) },
-  batchImport(data) { return api.post("/questions/batch", data) },
-  reEmbed() { return api.post("/questions/re-embed") },
-  searchQuestions(params) { return api.get("/questions/search", { params }) },
 }

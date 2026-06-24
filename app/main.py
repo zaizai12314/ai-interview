@@ -55,10 +55,8 @@ async def seed_questions_on_startup():
         print(f"Seeded {len(question_ids)} questions, embedding queued.")
 
 from app.routes.resume_api import router as resume_router
-from app.routes.question_api import router as question_router
 from app.routes.interview_api import router as interview_router
 app.include_router(resume_router)
-app.include_router(question_router)
 app.include_router(interview_router)
 
 
@@ -66,6 +64,6 @@ app.include_router(interview_router)
 
 @app.get("/api/health")
 async def health():
-    return {"status": "ok"}
-
-app.mount("/", StaticFiles(directory="frontend/dist", html=True), name="frontend")
+    return {"status": "ok"}
+
+app.mount("/", StaticFiles(directory="frontend/dist", html=True), name="frontend")

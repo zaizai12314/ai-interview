@@ -1,24 +1,7 @@
 ﻿from sqlalchemy import text, create_engine
 from sqlalchemy.orm import Session
-from sqlalchemy.ext.asyncio import AsyncSession
-from app.services.dashscope import embed_text, embed_text_sync
+from app.services.dashscope import embed_text_sync
 from app.config import settings
-
-
-async def search_questions(
-    db: AsyncSession,
-    job_title: str | None = None,
-    skill: str | None = None,
-    difficulty: str | None = None,
-    top_k: int = 5,
-) -> list[dict]:
-    """语义检索题库，基于 pgvector 余弦相似度"""
-    query_text = f"{job_title or ''} {skill or ''}".strip()
-    if not query_text:
-        return []
-
-    embedding = await embed_text(query_text)
-    return _search(embedding, job_title, difficulty, top_k)
 
 
 def search_questions_sync(
