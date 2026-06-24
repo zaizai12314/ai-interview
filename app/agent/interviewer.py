@@ -92,12 +92,14 @@ class InterviewerAgent:
         self.messages.append({"role": "assistant", "content": response})
 
         parsed = self._parse_response(response)
-        if not parsed.get("content", "").strip():
+        c = parsed.get("content")
+        if not isinstance(c, str) or not c.strip():
             response = chat_completion_sync(self.messages, temperature=0.9)
             self.messages.append({"role": "assistant", "content": response})
             parsed = self._parse_response(response)
 
-        if parsed.get("action") == "ask_question":
+        act = parsed.get("action")
+        if act == "ask_question":
             self.history.append({
                 "round": self.current_round,
                 "question": parsed.get("content", ""),
@@ -144,9 +146,10 @@ class InterviewerAgent:
         if start != -1 and end > start:
             try:
                 result = json.loads(response[start:end + 1])
-                content = result.get("content", "").strip()
-                if content:
+                content = result.get("content")
+                if isinstance(content, str) and content.strip():
                     return result
+                # content 非字符串（如嵌套对象）或为空 → 用原始响应作为内容
                 return {"action": result.get("action", "ask_question"), "content": response.strip()}
             except json.JSONDecodeError:
                 pass
