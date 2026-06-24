@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment
+.env
+
+# Uploads & data
+uploads/
+
+# Frontend
+node_modules/
+dist/
+
+# IDE & editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker
+.docker-config/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Project specific
+.superpowers/
+question.md
+fix_bom.py

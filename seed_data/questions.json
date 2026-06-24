@@ -1,0 +1,24 @@
+{
+  "questions": [
+    {"content":"请解释 Python 中的 GIL（全局解释器锁）是什么，它如何影响多线程程序？","answer_hint":"GIL 是 CPython 的互斥锁，保证同一时刻只有一个线程执行 Python 字节码。CPU 密集型多线程无法利用多核，需用 multiprocessing。","job_title":"Python 后端开发","skills":["Python","并发编程"],"difficulty":"medium"},
+    {"content":"什么是 FastAPI 的依赖注入？请举例说明它的作用。","answer_hint":"依赖注入允许声明路径操作函数所需的依赖项，FastAPI 自动注入。用于数据库连接、认证、权限校验等复用逻辑。","job_title":"Python 后端开发","skills":["FastAPI","Python"],"difficulty":"medium"},
+    {"content":"请解释 PostgreSQL 中索引的类型及 B-tree 和 Hash 索引的区别。","answer_hint":"B-tree 支持范围查询和排序，是最常用的默认索引。Hash 只支持等值查询。","job_title":"Python 后端开发","skills":["PostgreSQL","数据库"],"difficulty":"medium"},
+    {"content":"Redis 有哪些常见的数据类型？各自适用什么场景？","answer_hint":"String(缓存)、Hash(对象存储)、List(消息队列)、Set(去重)、Sorted Set(排行榜)、Stream(事件流)。","job_title":"Python 后端开发","skills":["Redis","缓存"],"difficulty":"easy"},
+    {"content":"请解释 Docker 和虚拟机的区别。","answer_hint":"Docker 共享宿主机内核，轻量级，秒级启动。虚拟机需要完整 Guest OS，资源占用大。","job_title":"Python 后端开发","skills":["Docker","运维"],"difficulty":"easy"},
+    {"content":"Vue 3 的 Composition API 和 Options API 有什么区别？为什么引入 Composition API？","answer_hint":"Options API 按选项组织，逻辑分散。Composition API 按功能组织，更好复用和 TypeScript 支持。","job_title":"前端开发","skills":["Vue","JavaScript"],"difficulty":"medium"},
+    {"content":"什么是 RESTful API 设计原则？请列举 3 个关键约束。","answer_hint":"1) 无状态 2) 统一接口: 资源导向 URL + HTTP 方法 3) 资源的表述与操作分离。","job_title":"Python 后端开发","skills":["API 设计","REST"],"difficulty":"easy"},
+    {"content":"请解释数据库事务的 ACID 特性。","answer_hint":"原子性(Atomicity)、一致性(Consistency)、隔离性(Isolation)、持久性(Durability)。","job_title":"Python 后端开发","skills":["数据库","事务"],"difficulty":"easy"},
+    {"content":"什么是 SQLAlchemy 2.0 中的 async session？如何使用？","answer_hint":"async session 使用 AsyncSession + asyncpg 驱动，支持异步数据库操作，需在 async 函数中用 await。","job_title":"Python 后端开发","skills":["SQLAlchemy","Python"],"difficulty":"medium"},
+    {"content":"Vue Router 中 hash 模式和 history 模式的区别是什么？","answer_hint":"hash 模式 URL 带 #，不发送到服务器。history 模式利用 HTML5 History API，需要服务器配置 fallback。","job_title":"前端开发","skills":["Vue","路由"],"difficulty":"easy"},
+    {"content":"什么是向量数据库？pgvector 如何实现语义搜索？","answer_hint":"向量数据库存储 embedding 向量，通过余弦相似度进行相似性搜索。pgvector 扩展 PostgreSQL 支持向量类型和距离运算符。","job_title":"Python 后端开发","skills":["RAG","pgvector"],"difficulty":"medium"},
+    {"content":"请解释 RAG（检索增强生成）的工作原理。","answer_hint":"将文档向量化存入知识库 → 用户查询时检索相关文档 → 将检索结果作为上下文注入 LLM Prompt → 生成更准确的回答。","job_title":"Python 后端开发","skills":["RAG","LLM"],"difficulty":"medium"},
+    {"content":"Celery 中 worker、broker、backend 分别是什么？","answer_hint":"Worker 执行任务的进程，Broker(RabbitMQ/Redis) 消息中间件传输任务，Backend 存储任务结果。","job_title":"Python 后端开发","skills":["Celery","异步任务"],"difficulty":"medium"},
+    {"content":"什么是 Tailwind CSS？与传统 CSS 框架有什么区别？","answer_hint":"Tailwind 是 utility-first CSS 框架，通过原子类组合构建样式，不提供预设组件。优势: 高度可定制、减少 CSS 膨胀。","job_title":"前端开发","skills":["CSS","Tailwind"],"difficulty":"easy"},
+    {"content":"请解释前端跨域问题及 CORS 的解决方案。","answer_hint":"浏览器的同源策略阻止跨域请求。CORS 通过服务端设置 Access-Control-Allow-Origin 等响应头允许跨域。","job_title":"前端开发","skills":["HTTP","安全"],"difficulty":"medium"},
+    {"content":"什么是 System Design？设计一个短链接服务需要考虑哪些方面？","answer_hint":"1) 短链生成算法 2) 重定向机制 3) 高并发读写 4) 数据分片 5) 缓存策略 6) 过期清理。","job_title":"Python 后端开发","skills":["系统设计"],"difficulty":"hard"},
+    {"content":"Python 中 async/await 的原理是什么？与多线程有什么区别？","answer_hint":"async/await 基于协程，事件循环调度，单线程并发，适合 IO 密集型。多线程有 GIL 限制。","job_title":"Python 后端开发","skills":["Python","异步编程"],"difficulty":"hard"},
+    {"content":"请解释 pgvector 中 IVFFlat 和 HNSW 索引的区别及各自适用场景。","answer_hint":"IVFFlat 基于倒排索引，构建快，适合中等精度。HNSW 基于图结构，查询快但构建慢内存占用大。","job_title":"Python 后端开发","skills":["pgvector","数据库"],"difficulty":"hard"},
+    {"content":"Vue 3 中 ref 和 reactive 的区别是什么？什么时候用哪个？","answer_hint":"ref 包装基本类型(.value 访问)，reactive 代理对象(直接访问)。ref 可重新赋值，reactive 不能。","job_title":"前端开发","skills":["Vue","JavaScript"],"difficulty":"easy"},
+    {"content":"在 LLM Agent 设计中，Function Calling 的工作机制是什么？","answer_hint":"定义工具函数 schema → LLM 根据用户意图决定调用哪个工具并生成参数 JSON → 程序执行工具 → 结果返回 LLM → 生成最终回答。","job_title":"Python 后端开发","skills":["LLM","Agent"],"difficulty":"hard"}
+  ]
+}
